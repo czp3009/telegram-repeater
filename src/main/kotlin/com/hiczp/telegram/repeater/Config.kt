@@ -10,6 +10,7 @@ typealias ProxyType = DefaultBotOptions.ProxyType
 val config by lazy { Config.read() }
 
 data class Config(
+        var logLevel: String = "INFO",
         var username: String = "yourUsername",
         var token: String = "yourToken",
         var proxyType: ProxyType = ProxyType.NO_PROXY,
@@ -26,6 +27,6 @@ data class Config(
 
         fun read() = gson.fromJson<Config>(configFile.reader())
 
-        fun write() = configFile.writeText(gson.toJson(Config()))
+        fun write(config: Config = Config()) = configFile.writeText(gson.toJson(config))
     }
 }

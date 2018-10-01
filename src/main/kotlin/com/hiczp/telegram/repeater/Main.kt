@@ -2,6 +2,8 @@ package com.hiczp.telegram.repeater
 
 import mu.KotlinLogging
 import org.apache.log4j.BasicConfigurator
+import org.apache.log4j.Level
+import org.apache.log4j.Logger
 import org.telegram.telegrambots.ApiContextInitializer
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.meta.ApiContext
@@ -23,6 +25,10 @@ fun main(args: Array<String>) {
         exitProcess(1)
     }
     logger.info { "Config loaded" }
+    config.logLevel.also {
+        logger.info { "Log level: $it" }
+        Logger.getRootLogger().level = Level.toLevel(it)
+    }
 
     //init
     logger.info { "Init ApiContext" }
