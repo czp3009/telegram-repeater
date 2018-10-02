@@ -42,6 +42,7 @@ fun main(args: Array<String>) {
             proxyPort = config.proxyPort
             logger.info { "Use proxy $proxyType $proxyHost:$proxyPort" }
         }
+        maxThreads = Runtime.getRuntime().availableProcessors() * 4
     }
 
     //bot

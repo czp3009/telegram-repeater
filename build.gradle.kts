@@ -1,12 +1,15 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+@Suppress("SpellCheckingInspection")
 plugins {
     kotlin("jvm") version "1.2.71"
+    id("com.github.johnrengelman.shadow") version "4.0.1"
 }
 
 @Suppress("SpellCheckingInspection")
 group = "com.hiczp"
-version = "0.0.1"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -25,4 +28,11 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<ShadowJar> {
+    @Suppress("SpellCheckingInspection")
+    manifest {
+        attributes["Main-Class"] = "com.hiczp.telegram.repeater.MainKt"
+    }
 }

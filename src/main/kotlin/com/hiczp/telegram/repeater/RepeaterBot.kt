@@ -1,5 +1,6 @@
 package com.hiczp.telegram.repeater
 
+import mu.KotlinLogging
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
@@ -19,13 +20,24 @@ class RepeaterBot(
     override fun onUpdateReceived(update: Update) {
         val message = update.message
         val chatId = message.chatId
+        val username = message.from.userName
         when {
-            message.hasText() -> fun() = execute(SendMessage(chatId, message.text))
-            message.hasSticker() -> fun() = execute(SendSticker(chatId, message.sticker.fileId))
+            message.hasText() -> fun() = message.text.let {
+                execute(SendMessage(chatId, it))
+                logger.info { "Reply message to $username: $it" }
+            }
+            message.hasSticker() -> fun() = message.sticker.fileId.let {
+                execute(SendSticker(chatId, it))
+                logger.info { "Reply sticker to $username: ${message.sticker.setName} $it" }
+            }
             else -> null
-        }.let {
-            if (it != null) exe.submit { it() }
+        }?.let {
+            exe.submit { it() }
         }
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
     }
 }
 

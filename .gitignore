@@ -2,6 +2,7 @@
 *.iml
 .gradle
 .idea
+build
 out
 config.json
 gradlew.bat
