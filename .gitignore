@@ -6,3 +6,4 @@ build
 out
 config.json
 gradlew.bat
+script

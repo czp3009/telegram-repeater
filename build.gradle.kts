@@ -20,6 +20,8 @@ repositories {
 dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile(kotlin("reflect"))
+    compile(kotlin("script-util"))
+    compile(kotlin("compiler-embeddable"))
     compile("org.telegram:telegrambots:4.1")
     compile("com.github.salomonbrys.kotson:kotson:2.5.0")
     compile("io.github.microutils:kotlin-logging:1.6.10")

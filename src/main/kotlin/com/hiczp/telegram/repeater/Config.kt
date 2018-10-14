@@ -7,10 +7,13 @@ import java.io.File
 
 typealias ProxyType = DefaultBotOptions.ProxyType
 
+internal const val internalScriptPath = "script.kts"
+
 val config by lazy { Config.read() }
 
 data class Config(
         var logLevel: String = "INFO",
+        var scriptPath: String = internalScriptPath,
         var username: String = "yourUsername",
         var token: String = "yourToken",
         var proxyType: ProxyType = ProxyType.NO_PROXY,
