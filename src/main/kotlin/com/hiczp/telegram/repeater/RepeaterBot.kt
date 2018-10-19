@@ -23,11 +23,11 @@ class RepeaterBot(
             put("telegramLongPollingBot", this@RepeaterBot)
             put("update", update)
         }.let {
-            compiledScript.eval(it)
+            exe.submit { compiledScript.eval(it) }
         }
     }
 
     companion object {
-        private val logger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger("BotScript")
     }
 }
