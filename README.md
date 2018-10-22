@@ -30,6 +30,11 @@
 
 如果没有使用过 Telegram Bot, 详见 https://core.telegram.org/bots
 
+# 命令
+`/enable` 开启机器人(仅在此群聊/私聊开启, 下同)
+
+`/disable` 关闭机器人
+
 # 自定义脚本
 用户可以通过自定义脚本来进行更复杂的复读.
 

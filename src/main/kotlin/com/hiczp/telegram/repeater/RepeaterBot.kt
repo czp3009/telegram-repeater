@@ -3,9 +3,11 @@ package com.hiczp.telegram.repeater
 import mu.KotlinLogging
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import javax.script.CompiledScript
 import javax.script.ScriptContext
+import javax.script.SimpleBindings
 
 class RepeaterBot(
         private val username: String,
@@ -28,8 +30,36 @@ class RepeaterBot(
     override fun getBotToken() = token
 
     override fun onUpdateReceived(update: Update) {
-        engineScopeBindings["update"] = update
-        exe.submit { compiledScript.eval(engineScopeBindings) }
+        val message = update.message
+        val chatId = message.chatId
+        if (message.isCommand) {
+            val command = message.text.substringBefore("@")
+            when (command) {
+                "/enable" -> {
+                    config.apply { if (disabledChatIds.remove(chatId)) flush() }
+                    "Bot enabled"
+                }
+                "/disable" -> {
+                    config.apply { if (disabledChatIds.add(chatId)) flush() }
+                    "Bot disabled"
+                }
+                else -> "Unknown command"
+            }
+        } else {
+            null
+        }?.let {
+            exe.submit { execute(SendMessage(chatId, it)) }
+            return
+        }
+
+        if (chatId in config.disabledChatIds) return
+
+        SimpleBindings().apply {
+            putAll(engineScopeBindings)
+            put("update", update)
+        }.let {
+            exe.submit { compiledScript.eval(it) }
+        }
     }
 
     companion object {

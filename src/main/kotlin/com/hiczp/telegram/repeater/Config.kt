@@ -4,6 +4,8 @@ import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.GsonBuilder
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import java.io.File
+import java.util.*
+import kotlin.collections.HashSet
 
 typealias ProxyType = DefaultBotOptions.ProxyType
 
@@ -19,8 +21,11 @@ data class Config(
         var proxyType: ProxyType = ProxyType.NO_PROXY,
         var proxyHost: String = "localhost",
         var proxyPort: Int = 1080,
-        var customVariable: Map<String, String> = HashMap()
+        var customVariable: Map<String, String> = HashMap(),
+        var disabledChatIds: MutableSet<Long> = HashSet()
 ) {
+    fun flush() = write(this)
+
     companion object {
         @Suppress("SpellCheckingInspection")
         private val gson = GsonBuilder().setPrettyPrinting().create()
