@@ -38,15 +38,15 @@ fun main(args: Array<String>) {
     })
 
     //script
-    val scriptEngineManager = ScriptEngineManager().getEngineByName("kotlin") as KotlinJsr223JvmScriptEngineBase
+    val scriptEngine = ScriptEngineManager().getEngineByName("kotlin") as KotlinJsr223JvmScriptEngineBase
     val compiledScript = File(config.scriptPath).run {
         if (exists().not()) {
             logger.warn { "External script file not exists, use default script" }
-            scriptEngineManager.compile(Config::class.java.getResource(Paths.get("/", internalScriptPath).toString()).readText())
+            scriptEngine.compile(Config::class.java.getResource(Paths.get("/", internalScriptPath).toString()).readText())
         } else {
             logger.info { "Loading external script file" }
             try {
-                scriptEngineManager.compile(readText())
+                scriptEngine.compile(readText())
             } catch (e: Exception) {
                 logger.error { "External script invalid: ${e.message}" }
                 throw  e

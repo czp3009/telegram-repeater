@@ -5,7 +5,7 @@ import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.objects.Update
 import javax.script.CompiledScript
-import javax.script.SimpleBindings
+import javax.script.ScriptContext
 
 class RepeaterBot(
         private val username: String,
@@ -13,18 +13,23 @@ class RepeaterBot(
         private val compiledScript: CompiledScript,
         defaultBotOptions: DefaultBotOptions
 ) : TelegramLongPollingBot(defaultBotOptions) {
+    private val engineScopeBindings = compiledScript.engine.getBindings(ScriptContext.ENGINE_SCOPE)
+
+    init {
+        engineScopeBindings.apply {
+            put("logger", logger)
+            put("telegramLongPollingBot", this@RepeaterBot)
+            put("customVariable", config.customVariable)
+        }
+    }
+
     override fun getBotUsername() = username
 
     override fun getBotToken() = token
 
     override fun onUpdateReceived(update: Update) {
-        SimpleBindings().apply {
-            put("logger", logger)
-            put("telegramLongPollingBot", this@RepeaterBot)
-            put("update", update)
-        }.let {
-            exe.submit { compiledScript.eval(it) }
-        }
+        engineScopeBindings["update"] = update
+        exe.submit { compiledScript.eval(engineScopeBindings) }
     }
 
     companion object {

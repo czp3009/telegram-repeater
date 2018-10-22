@@ -18,7 +18,8 @@ data class Config(
         var token: String = "yourToken",
         var proxyType: ProxyType = ProxyType.NO_PROXY,
         var proxyHost: String = "localhost",
-        var proxyPort: Int = 1080
+        var proxyPort: Int = 1080,
+        var customVariable: Map<String, String> = HashMap()
 ) {
     companion object {
         @Suppress("SpellCheckingInspection")

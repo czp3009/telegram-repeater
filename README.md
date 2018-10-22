@@ -24,7 +24,8 @@
       "token": "381477199:AAFRIcngHfYZ5JohphXVB3zqkqpIUJTNrdk",
       "proxyType": "SOCKS5",
       "proxyHost": "localhost",
-      "proxyPort": 1080
+      "proxyPort": 1080,
+      "customVariable": {}
     }
 
 如果没有使用过 Telegram Bot, 详见 https://core.telegram.org/bots
@@ -51,6 +52,26 @@
 机器人 API 详见 https://github.com/rubenlagus/TelegramBots
 
 脚本示例详见仓库的 `/script` 目录
+
+# 已有的自定义脚本
+## 复读机
+`/script/repeater`
+
+默认脚本的一个拷贝, 用于简单的复读. 复读所有文本消息和表情.
+
+## 图灵机器人
+`/script/tuling-bot`
+
+调用图灵机器人的 API 实现简单聊天. http://www.tuling123.com/
+
+需要在配置文件配置以下自定义变量
+
+    "customVariable": {
+        "tuLingBot.apiKey": "611d9ce10fbd4b18b8c63ac74b0e3d2c",
+        "tuLingBot.userId": "338715"
+    }
+
+由于图灵机器人 V2 API 文档混乱不堪, 尚不明确如何使用 "密钥". 请在机器人管理页面关闭 "密钥".
 
 # 构建
 
